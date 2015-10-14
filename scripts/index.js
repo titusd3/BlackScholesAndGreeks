@@ -456,7 +456,7 @@
             .call(yAxis6);
 
         svg.selectAll('.axis line, .axis path')
-            .style({ 'fill': 'none', 'stroke-width': '1', 'stroke': 'darkgray', 'shape-rendering': 'crispEdges'});
+            .style({ 'fill': 'none', 'stroke-width': '2', 'stroke': 'darkgray', 'shape-rendering': 'crispEdges'});
     }
 
     function plotGraphs (){
@@ -779,7 +779,9 @@
             Gmax = d3.max(callLineData,function(d){return d.gamma;}),
             Vmax = d3.max(callLineData,function(d){return d.vega;}),
             Tmincall = d3.min(callLineData,function(d){return d.theta;}),
+            Tmaxcall = d3.max(callLineData,function(d){return d.theta;}),
             Tminput = d3.min(putLineData,function(d){return d.theta;}),
+            Tmaxput = d3.max(putLineData,function(d){return d.theta;}),
             Rmaxcall = d3.max(callLineData,function(d){return d.rho;}),
             Rminput = d3.min(putLineData,function(d){return d.rho;});
 
@@ -792,13 +794,13 @@
             yScale1.domain([ymaxcall, 0]);
             yScale2 = d3.scale.linear().range([260, 380]);
             yScale2.domain([Dmaxcall, 0]);
-            yScale5.domain([0,Tmincall]);
+            yScale5.domain([Tmaxcall,Tmincall]);
             yScale6.domain([Rmaxcall, 0]);
         }   else{
             yScale1.domain([ymaxput, 0]);
             yScale2 = d3.scale.linear().range([270, 390]);
             yScale2.domain([0, Dminput]);
-            yScale5.domain([0, Tminput]);
+            yScale5.domain([Tmaxput, Tminput]);
             yScale6.domain([0, Rminput]);
         }
 
@@ -1185,7 +1187,7 @@
 
         $('#sliderDividend').slider({
             range: 'max',
-            min: -0.02,
+            min: -0.00,
             max: 0.05,
             step: 0.001,
             value: 0.00,
@@ -1267,6 +1269,7 @@
             interval: 6000,
             pause: 'hover'
         });
+
 
         $('#btnCall, #btnCall1').click(function(){
             $('#btnPut').removeClass('on').addClass('off');
